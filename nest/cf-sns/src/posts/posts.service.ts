@@ -1,13 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
-export interface PostModel {
-  id: number;
-  author: string;
-  title: string;
-  content: string;
-  likeCount: number;
-  commentCount: number;
-}
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PostModel } from './entities/posts.entity';
 
 let posts: PostModel[] = [
   {
@@ -38,12 +32,16 @@ let posts: PostModel[] = [
 
 @Injectable()
 export class PostsService {
-  getAllPosts() {
-    return posts;
+  constructor(
+    @InjectRepository(PostModel)
+    private readonly postRepository: Repository<PostModel>,
+  ) {}
+  async getAllPosts() {
+    return await this.postRepository.find();
   }
 
-  getPostById(id: number) {
-    const post = posts.find((p) => p.id === id);
+  async getPostById(id: number) {
+    const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) {
       throw new NotFoundException('Post Not Found');
@@ -52,23 +50,29 @@ export class PostsService {
     return post;
   }
 
-  createPost(author: string, title: string, content: string) {
-    const post = {
-      id: posts[posts.length - 1].id + 1,
+  async createPost(author: string, title: string, content: string) {
+    const post = this.postRepository.create({
       author,
       title,
       content,
       likeCount: 0,
       commentCount: 0,
-    };
+    });
 
-    posts.push(post);
-
-    return post;
+    return await this.postRepository.save(post);
   }
 
-  updatePost(postId: number, author: string, title: string, content: string) {
-    const post = posts.find((p) => p.id === postId);
+  async updatePost(
+    postId: number,
+    author: string,
+    title: string,
+    content: string,
+  ) {
+    // save의 기능
+    // 1) 새로 생성
+    // 2) id가 존재하는 데이터가 있으면 다른 컬럼을 update 한다.
+
+    const post = await this.postRepository.findOne({ where: { id: postId } });
 
     if (!post) {
       throw new NotFoundException();
@@ -86,19 +90,17 @@ export class PostsService {
       post.content = content;
     }
 
-    posts = posts.map((prevPost) => (prevPost.id === postId ? post : prevPost));
-
-    return posts;
+    return await this.postRepository.save(post);
   }
 
-  deletePost(postId: number) {
-    const post = posts.find((p) => p.id === postId);
+  async deletePost(postId: number) {
+    const post = await this.postRepository.findOne({ where: { id: postId } });
 
     if (!post) {
       throw new NotFoundException();
     }
 
-    posts = posts.filter((p) => p.id !== postId);
+    await this.postRepository.delete(postId);
 
     return postId;
   }
