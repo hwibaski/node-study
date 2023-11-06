@@ -18,6 +18,7 @@ import {
   AccessTokenGuard,
   RefreshTokenGuard,
 } from './guard/bearer-token.guard';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -56,13 +57,15 @@ export class AuthController {
 
   @Post('register/email')
   registerEmail(
-    @Body('nickname') nickname: string,
-    @Body('email') email: string,
-    @Body('password', PasswordPipe) password: string,
+    @Body() body: RegisterUserDto,
+    // @Body('nickname') nickname: string,
+    // @Body('email') email: string,
+    // @Body('password', PasswordPipe) password: string,
+
     // Pipe는 인스턴스화해서 넣어도 되고 클래스타입만 전달해도 된다. (Nest가 DI 해줌)
     // @Body('password-pipe-test', new MaxLengthPipe(8), new MinLengthPipe(3))
     // passwordTest: string,
   ) {
-    return this.authService.registerWihEmail({ nickname, email, password });
+    return this.authService.registerWihEmail(body);
   }
 }
