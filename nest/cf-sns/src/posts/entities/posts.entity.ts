@@ -1,12 +1,23 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { UserModel } from 'src/users/entities/users.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class PostModel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  author: string;
+  // 1) FK를 이용해서 UserModel과 연동
+  // 2) null이 될 수 없다.
+  @ManyToOne(() => UserModel, (user) => user.posts, { nullable: false })
+  @JoinColumn({ name: 'user_id' })
+  author: UserModel;
 
   @Column()
   title: string;

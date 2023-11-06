@@ -29,11 +29,11 @@ export class PostsController {
 
   @Post()
   createPost(
-    @Body('author') author: string,
+    @Body('authorId') authorId: number,
     @Body('title') title: string,
     @Body('content') content: string,
   ) {
-    return this.postsService.createPost(author, title, content);
+    return this.postsService.createPost(authorId, title, content);
   }
 
   @Put(':id')
@@ -43,7 +43,7 @@ export class PostsController {
     @Body('title') title?: string,
     @Body('content') content?: string,
   ) {
-    return this.postsService.updatePost(parseInt(id), author, title, content);
+    return this.postsService.updatePost(parseInt(id), title, content);
   }
 
   @Delete(':id')
