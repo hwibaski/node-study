@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  database:
+    container_name: postgresql_db
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=typeorm_study
+      - POSTGRES_USER=hwibaski
+      - POSTGRES_PASSWORD=hwibaski
+      - TZ=Asia/Seoul
+    ports:
+      - '5432:5432'
