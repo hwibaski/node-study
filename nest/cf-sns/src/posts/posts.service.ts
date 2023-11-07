@@ -6,12 +6,14 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PaginationPostDto } from './dto/paginate-post.dto';
 import { HOST, PROTOCOL } from 'src/common/const/env.const';
+import { CommonService } from 'src/common/common.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(PostModel)
     private readonly postRepository: Repository<PostModel>,
+    private readonly commonService: CommonService,
   ) {}
   async getAllPosts() {
     return await this.postRepository.find({
@@ -20,11 +22,21 @@ export class PostsService {
   }
 
   async paginationPosts(dto: PaginationPostDto) {
-    if (dto.page) {
-      return this.pagePaginatePosts(dto);
-    } else {
-      return this.cursorPaginatePosts(dto);
-    }
+    return this.commonService.paginate(
+      dto,
+      this.postRepository,
+      {
+        relations: {
+          author: true,
+        },
+      },
+      'post',
+    );
+    // if (dto.page) {
+    //   return this.pagePaginatePosts(dto);
+    // } else {
+    //   return this.cursorPaginatePosts(dto);
+    // }
   }
 
   async pagePaginatePosts(dto: PaginationPostDto) {

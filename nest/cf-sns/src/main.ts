@@ -13,6 +13,10 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true,
       },
+      // validation decorator가 적용되지 않은 프로퍼티는 전달되지 않는다.
+      whitelist: true,
+      // whilelist로 stripping 하는 대신에 예외를 던진다.
+      forbidNonWhitelisted: true,
     }),
   );
 
