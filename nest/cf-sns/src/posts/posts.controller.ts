@@ -31,12 +31,21 @@ import {
 } from 'src/common/const/path.const';
 import { basename, join } from 'path';
 import { promises } from 'fs';
+import { ImageModelType } from 'src/common/entity/image.entity';
+import { DataSource, QueryRunner } from 'typeorm';
+import { PostImagesService } from './image/images.service';
+import { LogInterceptor } from 'src/common/interceptor/log.interceptor';
 
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly dataSoruce: DataSource,
+    private readonly postsImageService: PostImagesService,
+  ) {}
 
   @Get()
+  @UseInterceptors(LogInterceptor)
   getPosts(@Query() query: PaginationPostDto) {
     return this.postsService.paginationPosts(query);
   }
@@ -68,8 +77,36 @@ export class PostsController {
     // @Body('content') content: string,
     // @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ) {
-    await this.postsService.createPostImage(body);
-    return this.postsService.createPost(userId, body);
+    // 쿼리 러너 생성
+    const qr = this.dataSoruce.createQueryRunner();
+    await qr.connect();
+    // 쿼리러너에서 트랜잭션을 시작한다.
+    // 이 시점부터 같은 쿼리 러너를 사용하면
+    // 트랜잭션 안에서 쿼리를 실행할 수 있다.
+
+    await qr.startTransaction();
+
+    // 로직 실행
+    try {
+      const post = await this.postsService.createPost(userId, body, qr);
+
+      for (let i = 0; i < body.images.length; i++) {
+        await this.postsImageService.createPostImage({
+          post,
+          order: i,
+          path: body.images[i],
+          type: ImageModelType.POST_IMAGE,
+        });
+      }
+
+      await qr.commitTransaction();
+
+      return this.postsService.getPostById(post.id);
+    } catch (e) {
+      await qr.rollbackTransaction();
+    } finally {
+      await qr.release();
+    }
   }
 
   @Patch(':id')

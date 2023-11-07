@@ -206,7 +206,7 @@ export class CommonService {
       if (operator === 'i_like') {
         options[field] = FILTER_MAPPER[operator](`%${values}%`);
       } else {
-        options[field] = FILTER_MAPPER[operator](values);
+        options[field] = FILTER_MAPPER[operator](parseInt(values));
       }
       //   if (operator === 'between') {
       //     options[field] = FILTER_MAPPER[operator](values[0], values[1]);

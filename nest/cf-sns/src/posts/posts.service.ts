@@ -4,7 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, LessThan, MoreThan, Repository } from 'typeorm';
+import {
+  FindOptionsWhere,
+  LessThan,
+  MoreThan,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 import { PostModel } from './entities/posts.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -22,6 +28,10 @@ import {
 } from 'src/common/const/path.const';
 import { basename, join } from 'path';
 import { promises } from 'fs';
+import { CreatePostImageDto } from './image/dto/create-image.dto';
+import { ImageModel } from 'src/common/entity/image.entity';
+import { DEFAULT_POST_FIND_OPTIONS } from './const/default-post-find-options.const';
+import { Query } from 'typeorm/driver/Query';
 
 @Injectable()
 export class PostsService {
@@ -30,10 +40,12 @@ export class PostsService {
     private readonly postRepository: Repository<PostModel>,
     private readonly commonService: CommonService,
     private readonly configService: ConfigService,
+    @InjectRepository(ImageModel)
+    private readonly imageRepository: Repository<ImageModel>,
   ) {}
   async getAllPosts() {
     return await this.postRepository.find({
-      relations: { author: true },
+      ...DEFAULT_POST_FIND_OPTIONS,
     });
   }
 
@@ -42,9 +54,7 @@ export class PostsService {
       dto,
       this.postRepository,
       {
-        relations: {
-          author: true,
-        },
+        ...DEFAULT_POST_FIND_OPTIONS,
       },
       'post',
     );
@@ -165,14 +175,15 @@ export class PostsService {
       await this.createPost(userId, {
         title: `임의로 생성된 포스트 ${i}`,
         content: `임의로 생성된 포스트 내용 ${i}`,
+        images: [],
       });
     }
   }
 
   async getPostById(id: number) {
     const post = await this.postRepository.findOne({
+      ...DEFAULT_POST_FIND_OPTIONS,
       where: { id },
-      relations: { author: true },
     });
 
     if (!post) {
@@ -182,17 +193,26 @@ export class PostsService {
     return post;
   }
 
-  async createPost(authorId: number, postDto: CreatePostDto) {
-    const post = this.postRepository.create({
+  getRepository(qr?: QueryRunner) {
+    return qr
+      ? qr.manager.getRepository<PostModel>(PostModel)
+      : this.postRepository;
+  }
+
+  async createPost(authorId: number, postDto: CreatePostDto, qr?: QueryRunner) {
+    const repository = this.getRepository(qr);
+
+    const post = repository.create({
       author: {
         id: authorId,
       },
       ...postDto,
+      images: [],
       likeCount: 0,
       commentCount: 0,
     });
 
-    return await this.postRepository.save(post);
+    return await repository.save(post);
   }
 
   async updatePost(postId: number, postDto: UpdatePostDto) {
@@ -229,31 +249,5 @@ export class PostsService {
     await this.postRepository.delete(postId);
 
     return postId;
-  }
-
-  async createPostImage(dto: CreatePostDto) {
-    // dto의 이미지 이름을 기반으로
-    // 파일의 경로를 생성한다.
-
-    const tempFilePath = join(TEMP_FOLDER_PATH, dto.image);
-
-    try {
-      // 파일이 존재하는지 확인
-      // 만약에 존재하지 않으면 예외를 던짐
-      await promises.access(tempFilePath);
-    } catch (e) {
-      throw new BadRequestException('존재하지 않는 파일입니다.');
-    }
-
-    // 파일의 이름만 가져오기
-    // /Users/aaa/bbb/asdf.jpg -> asdf.jpg
-    const fileName = basename(tempFilePath);
-
-    // 새로 이동할 포스트 폴더의 경로 + 이미지 이름
-    const newPath = join(POST_IMAGE_PATH, fileName);
-
-    await promises.rename(tempFilePath, newPath);
-
-    return true;
   }
 }
