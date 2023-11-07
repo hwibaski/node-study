@@ -21,6 +21,8 @@ export class TransactionInterceptor implements NestInterceptor {
     await qr.connect();
     await qr.startTransaction();
 
+    req.queryRunner = qr;
+
     return next.handle().pipe(
       catchError(async (e) => {
         qr.rollbackTransaction();
