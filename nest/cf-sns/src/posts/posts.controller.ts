@@ -13,6 +13,8 @@ import {
   Request,
   Patch,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
@@ -21,6 +23,7 @@ import { UserModel } from 'src/users/entities/users.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PaginationPostDto } from './dto/paginate-post.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('posts')
 export class PostsController {
@@ -51,14 +54,17 @@ export class PostsController {
   // DTO - Data Transfer Object
   @Post()
   @UseGuards(AccessTokenGuard)
+  // image라는 키 값에다가 파일 전달
+  @UseInterceptors(FileInterceptor('image'))
   createPost(
     @User('id') userId: number,
     @Body() body: CreatePostDto,
+    @UploadedFile() file?: Express.Multer.File,
     // @Body('title') title: string,
     // @Body('content') content: string,
     // @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ) {
-    return this.postsService.createPost(userId, body);
+    return this.postsService.createPost(userId, body, file?.filename);
   }
 
   @Patch(':id')

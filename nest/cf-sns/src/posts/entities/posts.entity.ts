@@ -1,3 +1,6 @@
+import { Transform } from 'class-transformer';
+import { join } from 'path';
+import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { BaseModel } from 'src/common/entity/base.entity';
 import { UserModel } from 'src/users/entities/users.entity';
 import {
@@ -28,4 +31,10 @@ export class PostModel extends BaseModel {
 
   @Column()
   commentCount: number;
+
+  @Column({
+    nullable: true,
+  })
+  @Transform(({ value }) => value && `/${join(POST_PUBLIC_IMAGE_PATH, value)}`)
+  image?: string;
 }
