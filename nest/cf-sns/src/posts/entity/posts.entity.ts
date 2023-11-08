@@ -1,18 +1,8 @@
-import { Transform } from 'class-transformer';
-import { join } from 'path';
-import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { BaseModel } from 'src/common/entity/base.entity';
 import { ImageModel } from 'src/common/entity/image.entity';
-import { UserModel } from 'src/users/entities/users.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { UserModel } from 'src/users/entity/users.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { CommentsModel } from '../comments/entity/comments.entity';
 
 @Entity()
 export class PostModel extends BaseModel {
@@ -42,4 +32,7 @@ export class PostModel extends BaseModel {
 
   @OneToMany(() => ImageModel, (image) => image.post)
   images: ImageModel[];
+
+  @OneToMany(() => CommentsModel, (comment) => comment.author)
+  comments: CommentsModel[];
 }

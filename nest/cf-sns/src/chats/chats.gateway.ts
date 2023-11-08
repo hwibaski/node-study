@@ -22,7 +22,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { SocketChatHttpExceptionFilter } from 'src/common/exception-filter/socket-catch-http.exception-filter';
-import { UserModel } from 'src/users/entities/users.entity';
+import { UserModel } from 'src/users/entity/users.entity';
 import { AccessTokenGuard } from '../auth/guard/bearer-token.guard';
 import { UsersService } from '../users/users.service';
 import { AuthService } from '../auth/auth.service';

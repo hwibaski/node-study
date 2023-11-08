@@ -9,7 +9,6 @@ import { ChatsMessagesService } from './messages/messages.service';
 import { MessageModel } from './messages/entity/messages.entity';
 import { MessagesController } from './messages/messages.controller';
 import { AuthModule } from 'src/auth/auth.module';
-import { UserModel } from 'src/users/entities/users.entity';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({

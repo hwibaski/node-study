@@ -1,12 +1,9 @@
 import { Transform } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { join } from 'path';
-import {
-  POST_IMAGE_PATH,
-  POST_PUBLIC_IMAGE_PATH,
-} from 'src/common/const/path.const';
+import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { ImageModelType } from 'src/common/entity/image.entity';
-import { PostModel } from 'src/posts/entities/posts.entity';
+import { PostModel } from 'src/posts/entity/posts.entity';
 
 export class CreatePostImageDto {
   // 이미지 업로드 순서

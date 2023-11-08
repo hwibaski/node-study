@@ -1,8 +1,7 @@
 import { BaseModel } from 'src/common/entity/base.entity';
-import { UserModel } from 'src/users/entities/users.entity';
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
+import { UserModel } from 'src/users/entity/users.entity';
+import { Entity, ManyToMany, OneToMany } from 'typeorm';
 import { MessageModel } from '../messages/entity/messages.entity';
-import { IsString } from 'class-validator';
 
 @Entity()
 export class ChatsModel extends BaseModel {

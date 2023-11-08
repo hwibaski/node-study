@@ -1,5 +1,3 @@
-import { PickType } from '@nestjs/mapped-types';
-import { PostModel } from '../entities/posts.entity';
 import { IsOptional, IsString } from 'class-validator';
 import { stringValidationMessage } from 'src/common/validation-message/string-validation.message';
 

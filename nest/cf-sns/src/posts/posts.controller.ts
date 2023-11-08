@@ -1,36 +1,23 @@
 import {
   Body,
   Controller,
-  DefaultValuePipe,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
-  Post,
-  Put,
-  UseGuards,
-  Request,
   Patch,
+  Post,
   Query,
+  UseGuards,
   UseInterceptors,
-  UploadedFile,
-  BadRequestException,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
 import { User } from 'src/users/decorator/user.decorator';
-import { UserModel } from 'src/users/entities/users.entity';
+import { UserModel } from 'src/users/entity/users.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PaginationPostDto } from './dto/paginate-post.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  POST_IMAGE_PATH,
-  PUBLIC_FOLDER_PATH,
-} from 'src/common/const/path.const';
-import { basename, join } from 'path';
-import { promises } from 'fs';
 import { ImageModelType } from 'src/common/entity/image.entity';
 import { DataSource, QueryRunner as QR } from 'typeorm';
 import { PostImagesService } from './image/images.service';
