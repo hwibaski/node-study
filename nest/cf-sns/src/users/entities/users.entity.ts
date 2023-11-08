@@ -1,8 +1,17 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { RolesEnum } from '../const/roles.const';
 import { PostModel } from 'src/posts/entities/posts.entity';
 import { BaseModel } from 'src/common/entity/base.entity';
 import { Exclude, Expose } from 'class-transformer';
+import { ChatsModel } from 'src/chats/entity/chat.entity';
+import { MessageModel } from 'src/chats/messages/entity/messages.entity';
 
 @Entity()
 // @Exclude(), 모든 프로퍼티를 노출하지 않는다. 원하는 프로퍼티만 @Expose 달아주면 그 프로퍼티만 노출
@@ -52,4 +61,11 @@ export class UserModel extends BaseModel {
 
   @OneToMany(() => PostModel, (post) => post.author)
   posts: PostModel[];
+
+  @ManyToMany(() => ChatsModel, (chat) => chat.users)
+  @JoinTable()
+  chats: ChatsModel[];
+
+  @OneToMany(() => MessageModel, (message) => message.author)
+  messages: MessageModel[];
 }
