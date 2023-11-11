@@ -79,7 +79,7 @@ interface GetXnY {
 
 interface GetXnY {
     getX: (x: number) => number;
-    getY: (y: string) => number; // 프로퍼티라서 오버로딩이 안되기 때문에 머징 안됨
+    // getY: (y: string) => number; // 프로퍼티라서 오버로딩이 안되기 때문에 머징 안됨
 }
 
 interface GetXnY2 {

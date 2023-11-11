@@ -44,15 +44,15 @@ unknownValue = undefined;
 
 let anyType: any = unknownValue;
 let unknownType: unknown = unknownValue;
-let booleanType: boolean = unknownValue;
-let arrayType: string[] = unknownValue;
-let objectType: {} = unknownValue;
-let nullType: null = unknownValue;
-let undefinedType: undefined = unknownValue;
+// let booleanType: boolean = unknownValue;
+// let arrayType: string[] = unknownValue;
+// let objectType: {} = unknownValue;
+// let nullType: null = unknownValue;
+// let undefinedType: undefined = unknownValue;
 
-unknownValue.toUpperCase();
-unknownValue.name;
-new unknownValue();
+// unknownValue.toUpperCase();
+// unknownValue.name;
+// new unknownValue();
 
 function isString(target: unknown): target is string {
     return typeof target === 'string';
