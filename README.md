@@ -9,6 +9,6 @@
 |`js`|codefactory-js|코드팩토리님의 JS 강의 기록용 레포|[codefactory-js](./js-study/codefactory-js)|
 |`js`|functional-js-basic|유인동님의 함수형 JS 강의 기록용 레포|[functional-js-basic](./js-study/functional-js-bsaic)|
 |`js`|yalco-js|얄코님의 JS 강의 기록용 레포|[yalco-js](./js-study/yalco-js/)|
-|`ts`|codefactory-js|코드팩토리님의 TS 강의 기록용 레포|[codefactory-ts](./ts-study/codefactory-ts)|
+|`ts`|codefactory-ts|코드팩토리님의 TS 강의 기록용 레포|[codefactory-ts](./ts-study/codefactory-ts)|
 |`nest`|cf-sns|코드팩토리님의 Nest.js 강의 기록용 레포|[cf-sns](./nest/cf-sns)|
 |`nest`|typeorm-study|코드팩토리님의 Nest.js 강의 기록용 레포|[typeorm-study](./nest/typeorm-study)|
