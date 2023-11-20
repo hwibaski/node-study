@@ -12,3 +12,5 @@
 |`ts`|codefactory-ts|코드팩토리님의 TS 강의 기록용 레포|[codefactory-ts](./ts-study/codefactory-ts)|
 |`nest`|cf-sns|코드팩토리님의 Nest.js 강의 기록용 레포|[cf-sns](./nest/cf-sns)|
 |`nest`|typeorm-study|코드팩토리님의 Nest.js 강의 기록용 레포|[typeorm-study](./nest/typeorm-study)|
+|`nest`|nest-official-overview-study|Nest.JS 공식 문서 기반 스터디|[nest-official-overview-study](./nest/nest-official-overview-study/)|
+
