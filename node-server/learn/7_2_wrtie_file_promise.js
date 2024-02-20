@@ -1,0 +1,14 @@
+const fs = require('node:fs/promises');
+
+async function example() {
+  try {
+    const content = 'Some content!';
+    await fs.writeFile('./files_for_test/write/promise/test.txtt', content);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+example();
+
+[{"eventTime":1708078975623,"message":"["},{"eventTime":1708078975623,"message":"  FedexReceptionExcelFormat {"},{"eventTime":1708078975623,"message":"    senderCity: 'SEOUL',"},{"eventTime":1708078975623,"message":"    senderCountry: 'KR',"},{"eventTime":1708078975623,"message":"    packageType: 'YOUR_PACKAGING',"},{"eventTime":1708078975623,"message":"    numberOfPackages: 1,"},{"eventTime":1708078975623,"message":"    weightUnits: 'KSG',"},{"eventTime":1708078975623,"message":"    currencyType: 'USD',"},{"eventTime":1708078975623,"message":"    commodityMeasureUnit: 'PCS',"},{"eventTime":1708078975623,"message":"    generateInvoice: 'CI',"},{"eventTime":1708078975623,"message":"    serviceType: 'FEDEX_INTERNATIONAL_PRIORITY',"},{"eventTime":1708078975623,"message":"    senderContactName: 'test',"},{"eventTime":1708078975623,"message":"    senderContactNumber: '8201099007278',"},{"eventTime":1708078975623,"message":"    senderLine1: 'test',"},{"eventTime":1708078975623,"message":"    senderLine2: 'test',"},{"eventTime":1708078975623,"message":"    senderPostalCode: '06099',"},{"eventTime":1708078975623,"message":"    recipientContactName: 'test',"},{"eventTime":1708078975623,"message":"    recipientContacNumber: '082/000/000/000',"},{"eventTime":1708078975623,"message":"    recipientLine1: 'test/test',"},{"eventTime":1708078975623,"message":"    recipientLine2: 'test',"},{"eventTime":1708078975623,"message":"    recipientPostalCode: 'test',"},{"eventTime":1708078975623,"message":"    recipientCity: 'test',"},{"eventTime":1708078975623,"message":"    recipientCountry: 'KR',"},{"eventTime":1708078975623,"message":"    packageWeight: 1,"},{"eventTime":1708078975623,"message":"    commodityType: 'ITEMS',"},{"eventTime":1708078975623,"message":"    itemDescription: 'Clothes',"},{"eventTime":1708078975623,"message":"    manufacturingCountry: '',"},{"eventTime":1708078975623,"message":"    commodityQuantity: 1,"},{"eventTime":1708078975623,"message":"    commodityWeight: 1,"},{"eventTime":1708078975623,"message":"    customsValue: '1',"},{"eventTime":1708078975623,"message":"    purposeOfShipment: 'GIFT'"},{"eventTime":1708078975623,"message":"  }"},{"eventTime":1708078975623,"message":"]"},{"eventTime":1708078975630,"message":"\"Request failed with status code 400\""},{"eventTime":1708078975630,"message":"\"Request failed with status code 400\""}]
